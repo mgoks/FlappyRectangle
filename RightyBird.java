@@ -1,57 +1,24 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.swing.JFrame;
-import javax.swing.Timer;
-
 import java.applet.Applet;
-import java.awt.*;
-import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import javax.imageio.*;
-
-
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.io.*;
-import javax.imageio.*;
 import javax.swing.*;
-import javax.imageio.ImageIO;
-
 
 public class RightyBird implements ActionListener, MouseListener, KeyListener
 {
 	
 	public static RightyBird rightyBird;
-
-	public final int WIDTH = 1920	, HEIGHT = 1080;
-
+	public final int WIDTH = 1920, HEIGHT = 1080;
 	public Renderer renderer;
-
 	public Rectangle bird;
-
 	public ArrayList<Rectangle> columns;
-
-	public int ticks, yMotion, y2Motion, speed, x2Motion, score, flag=1, highScore=0;
-
+	public int ticks, yMotion, y2Motion, speed, x2Motion, score, flag = 1, highScore = 0;
 	public boolean gameOver, started;
-
 	public Random rand;
-	
 	public double increment = 1;
-	
 
 	public RightyBird()
 	{
@@ -70,7 +37,7 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 
-		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+		bird = new Rectangle(WIDTH/2 - 10, HEIGHT/2 - 10, 20, 20);
 		columns = new ArrayList<Rectangle>();
 
 		addColumn(true);
@@ -89,14 +56,27 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 
 		if (start)
 		{
-			columns.add(new Rectangle(WIDTH + width + columns.size() * 300, HEIGHT - height - 120, width, height));
-			columns.add(new Rectangle(WIDTH + width + (columns.size() - 1) * 300, 0, width, HEIGHT - height - space));
-	
+			columns.add(new Rectangle(WIDTH + width + columns.size()*300, 
+						  HEIGHT - height - 120, 
+						  width, 
+						  height));
+						  
+			columns.add(new Rectangle(WIDTH + width + (columns.size() - 1)*300, 
+						  0, 
+						  width, 
+						  HEIGHT - height - space));
 		}
 		else
 		{
-			columns.add(new Rectangle(columns.get(columns.size() - 1).x + 600, HEIGHT - height - 120, width, height));
-			columns.add(new Rectangle(columns.get(columns.size() - 1).x, 0, width, HEIGHT - height - space));
+			columns.add(new Rectangle(columns.get(columns.size() - 1).x + 600, 
+							      HEIGHT - height - 120, 
+							      width, 
+							      height));
+							      
+			columns.add(new Rectangle(columns.get(columns.size() - 1).x, 
+							      0, 
+							      width, 
+							      HEIGHT - height - space));
 		}
 	}
 
@@ -110,7 +90,7 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 	{
 		if (gameOver)
 		{
-			bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+			bird = new Rectangle(WIDTH/2 - 10, HEIGHT/2 - 10, 20, 20);
 			columns.clear();
 			yMotion = 0;
 			y2Motion = 0;
@@ -146,13 +126,13 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 			if (flag == 0)
 			{	
 				yMotion -= 5;
-				speed =5;
+				speed = 5;
 				flag = 1;
 			}
 			else if (flag == 1)
 			{
 				speed = 0;
-				yMotion= -7;
+				yMotion = -7;
 				flag = 2;
 			}
 			else if (flag == 2)
@@ -174,29 +154,23 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 	public void actionPerformed(ActionEvent e)
 	{
 		int speed = 5;
-
 		ticks++;
 		
 		if ((score % 5) == 0 && score != 0)
 		{
 			increment += 0.1;
 		}
-
 		if (started)
 		{
 			for (int i = 0; i < columns.size(); i++)
 			{
 				Rectangle column = columns.get(i);
-				
 				column.x -= speed * increment;
-				
 			}
-
 			if (ticks % 2 == 0 && yMotion < 15)
 			{
 				yMotion += 0;
 			}
-
 			for (int i = 0; i < columns.size(); i++)
 			{
 				Rectangle column = columns.get(i);
@@ -212,6 +186,8 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 					}
 				}
 			}
+			
+			// Increase speed as the players advances
 			if (flag == 0)
 			{
 				bird.y += yMotion;
@@ -233,15 +209,18 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 
 			for (Rectangle column : columns)
 			{
-				if (score%2 == 0 &&column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
+				if (score % 2 == 0 && column.y == 0 && 
+				    bird.x + bird.width/2 > column.x + column.width/2 - 10 && 
+				    bird.x + bird.width/2 < column.x + column.width/2 + 10)
 				{
 					//score++;
 				}
 				else{
-					if (score%2 == 1 && column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
+					if (score % 2 == 1 && column.y == 0 && 
+					    bird.x + bird.width/2 > column.x + column.width/2 - 10 && 
+					    bird.x + bird.width/2 < column.x + column.width/2 + 10)
 					{
-				
-				//	score++;
+					//	score++;
 					}
 				}
 
@@ -252,7 +231,6 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 					if (bird.x <= column.x)
 					{
 						bird.x = column.x - bird.width;
-
 					}
 					else
 					{
@@ -279,10 +257,14 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 				gameOver = true;
 			}
 		}
-		if(score > highScore && gameOver==false) {
+		
+		if( score > highScore && gameOver==false) 
+		{
 			highScore=score;
 		}
-		if (bird.x <=0 || bird.x >= WIDTH) {
+		
+		if (bird.x <= 0 || bird.x >= WIDTH) 
+		{
 			gameOver = true;
 		}
 		renderer.repaint();
@@ -292,13 +274,10 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 	{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-
 		g.setColor(Color.orange);
 		g.fillRect(0, HEIGHT - 120, WIDTH, 120);
-
 		g.setColor(Color.green);
 		g.fillRect(0, HEIGHT - 120, WIDTH, 20);
-
 		g.setColor(Color.yellow);
 		g.fillRect(bird.x, bird.y, bird.width, bird.height);
 
@@ -312,19 +291,19 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 
 		if (!started)
 		{
-			g.drawString("Click to start!", 75, HEIGHT / 2 - 50);
+			g.drawString("Click to start!", 75, HEIGHT/2 - 50);
 		}
 
 		if (gameOver)
 		{
-			g.drawString("Game Over!", 280, HEIGHT / 2 - 100);
-			g.drawString("Highscore : "+ highScore/2,250, HEIGHT / 2 - 0);
+			g.drawString("Game Over!", 280, HEIGHT/2 - 100);
+			g.drawString("Highscore : "+ highScore/2, 250, HEIGHT/2 - 0);
 		}
 
 		if (!gameOver && started)
 		{
-			g.drawString("Highscore : "+ highScore, 10, HEIGHT / 10 - 120);
-			g.drawString(String.valueOf(score/2), WIDTH / 2 - 25, 100);
+			g.drawString("Highscore : "+ highScore, 10, HEIGHT/10 - 120);
+			g.drawString(String.valueOf(score/2), WIDTH/2 - 25, 100);
 		}
 	}
 
@@ -348,36 +327,36 @@ public class RightyBird implements ActionListener, MouseListener, KeyListener
 		}
 	}
 	
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-	}
+// 	@Override
+// 	public void mousePressed(MouseEvent e)
+// 	{
+// 	}
 
-	@Override
-	public void mouseReleased(MouseEvent e)
-	{
-	}
+// 	@Override
+// 	public void mouseReleased(MouseEvent e)
+// 	{
+// 	}
 
-	@Override
-	public void mouseEntered(MouseEvent e)
-	{
-	}
+// 	@Override
+// 	public void mouseEntered(MouseEvent e)
+// 	{
+// 	}
 
-	@Override
-	public void mouseExited(MouseEvent e)
-	{
-	}
+// 	@Override
+// 	public void mouseExited(MouseEvent e)
+// 	{
+// 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
+// 	@Override
+// 	public void keyTyped(KeyEvent e)
+// 	{
 
-	}
+// 	}
 
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
+// 	@Override
+// 	public void keyPressed(KeyEvent e)
+// 	{
 
-	}
+// 	}
 
 }
